@@ -16,23 +16,3 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
-
-
-
-// signOut(auth).then(() => {
-//     // Sign-out successful.
-//   }).catch((error) => {
-//     // An error happened.
-//   });
-
-// export const signOut = async () => {
-//     try {
-//       // Sign out
-//       await auth.signOut();
-  
-//       // Update store with null user
-//       store.dispatch(logout());
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };

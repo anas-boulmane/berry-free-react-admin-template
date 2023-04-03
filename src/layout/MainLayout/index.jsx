@@ -74,6 +74,7 @@ const MainLayout = () => {
   const handleLeftDrawerToggle = () => {
     dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
   };
+  // protect the route
   const { isLoading } = useAuth();
   return !isLoading && (
       <Box sx={{ display: 'flex' }}>

@@ -65,7 +65,6 @@ const ProfileSection = () => {
     try {
       // Sign out
       await auth.signOut();
-        // Update store with null user
         dispatch(logOut());
         navigate('/pages/login/login3');
         console.log(store.getState());
