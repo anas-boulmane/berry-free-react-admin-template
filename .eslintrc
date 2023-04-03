@@ -53,14 +53,14 @@
     "prefer-destructuring": 0,
     "no-shadow": 0,
     "prettier/prettier": [
-      2,
+      0,
       {
-        "bracketSpacing": true,
-        "printWidth": 140,
-        "singleQuote": true,
-        "trailingComma": "none",
-        "tabWidth": 2,
-        "useTabs": false,
+        // "bracketSpacing": true,
+        // "printWidth": 140,
+        // "singleQuote": true,
+        // "trailingComma": "none",
+        // "tabWidth": 2,
+        // "useTabs": false,
         "endOfLine": "auto"
       }
     ]

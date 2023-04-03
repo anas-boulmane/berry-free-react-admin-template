@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 
 // project imports
+import { PrivateRoute } from './PrivateRoute';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 
@@ -20,9 +21,9 @@ const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
-const MainRoutes = {
+ const MainRoutes = {
   path: '/',
-  element: <MainLayout />,
+  element: <MainLayout/>,
   children: [
     {
       path: '/',
@@ -97,5 +98,5 @@ const MainRoutes = {
     }
     ]
 };
-
 export default MainRoutes;
+
