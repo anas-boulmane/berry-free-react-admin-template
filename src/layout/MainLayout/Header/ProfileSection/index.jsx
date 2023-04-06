@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-
-import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+import { logOut } from 'store/authActions';
+import { useDispatch } from 'react-redux';
+import { auth } from 'firbaseConfig/Firebase';
+import { useNavigate } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
@@ -55,8 +56,17 @@ const ProfileSection = () => {
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
   const anchorRef = useRef(null);
+  const authentication = useSelector((state) => state.auth);
+  // log out
+  const dispatch = useDispatch();
   const handleLogout = async () => {
-    console.log('Logout');
+    try {
+      // Sign out
+      await auth.signOut();
+      dispatch(logOut());
+      navigate('/pages/login/login3');
+    } catch (error) {
+    }
   };
 
   const handleClose = (event) => {
