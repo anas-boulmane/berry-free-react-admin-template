@@ -17,7 +17,7 @@ const authReducer = (state = initialState, action) => {
         photoURL: action.photoURL
       };
 
-      case LogOut:
+    case LogOut:
       return {
         uid: null,
         name: null,

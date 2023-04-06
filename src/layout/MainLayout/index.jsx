@@ -76,7 +76,8 @@ const MainLayout = () => {
   };
   // protect the route
   const { isLoading } = useAuth();
-  return !isLoading && (
+  return (
+    !isLoading && (
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         {/* header */}
@@ -105,7 +106,8 @@ const MainLayout = () => {
           <Outlet />
         </Main>
         <Customization />
-      </Box> 
+      </Box>
+    )
   );
 };
 

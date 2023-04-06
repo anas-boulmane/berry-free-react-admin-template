@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { store } from '../../../../store/index';
 import { db, auth, googleProvider } from '../../../../firbaseConfig/Firebase';
@@ -6,7 +6,7 @@ import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logIn } from 'store/authActions';
-import { doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -51,7 +51,7 @@ const FirebaseLogin = ({ ...others }) => {
   const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const customization = useSelector((state) => state.customization);
-  const authentication = useSelector((state) => state.auth)
+  const authentication = useSelector((state) => state.auth);
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -60,39 +60,40 @@ const FirebaseLogin = ({ ...others }) => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  useEffect( ()=> {
+  useEffect(() => {
     console.log(authentication);
-  },[authentication]);
+  }, [authentication]);
   //==============================|| signInGoogle ||==============================
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const googleHandler = async () => {
     signInWithPopup(auth, googleProvider)
-    .then(async (result) => {
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      const user = result.user;
-      console.log(user)
-      dispatch(logIn(user))
-      console.log(store.getState());
-    
-      // store in cloud firebase
-      const {uid,displayName,email,photoURL} = user
-      const userRef = doc(db, "users", uid);
-      const userDoc = await getDoc(userRef);
-      if (userDoc.exists()) {
-        // User already exists, update the document
-        await updateDoc(userRef, {displayName,email,photoURL,uid});
-      } else {
-        // User does not exist, create a new document
-        await setDoc(userRef, {displayName, email,photoURL,uid});
-      }
-      navigate('/');
-      console.log('navigate')
-    }).catch((error) => {
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      console.log(error)
-    });
+      .then(async (result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        const user = result.user;
+        console.log(user);
+        dispatch(logIn(user));
+        console.log(store.getState());
+
+        // store in cloud firebase
+        const { uid, displayName, email, photoURL } = user;
+        const userRef = doc(db, 'users', uid);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          // User already exists, update the document
+          await updateDoc(userRef, { displayName, email, photoURL, uid });
+        } else {
+          // User does not exist, create a new document
+          await setDoc(userRef, { displayName, email, photoURL, uid });
+        }
+        navigate('/');
+        console.log('navigate');
+      })
+      .catch((error) => {
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(error);
+      });
   };
   return (
     <>

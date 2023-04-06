@@ -1,9 +1,8 @@
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
-import { Provider } from "react-redux";
+import { Provider } from 'react-redux';
 import { store } from './store/index';
 import { useSelector } from 'react-redux';
-
 
 // routing
 import Routes from 'routes';
@@ -23,12 +22,12 @@ const App = () => {
   return (
     <StyledEngineProvider injectFirst>
       <Provider store={store}>
-      <ThemeProvider theme={themes(customization)}>
-        <CssBaseline />
-        <NavigationScroll>
-          <Routes />
-        </NavigationScroll>
-      </ThemeProvider>
+        <ThemeProvider theme={themes(customization)}>
+          <CssBaseline />
+          <NavigationScroll>
+            <Routes />
+          </NavigationScroll>
+        </ThemeProvider>
       </Provider>
     </StyledEngineProvider>
   );

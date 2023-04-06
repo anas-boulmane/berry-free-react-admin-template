@@ -58,20 +58,19 @@ const ProfileSection = () => {
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
   const anchorRef = useRef(null);
-  const authentication = useSelector((state) => state.auth)
+  const authentication = useSelector((state) => state.auth);
   // log out
   const dispatch = useDispatch();
   const handleLogout = async () => {
     try {
       // Sign out
       await auth.signOut();
-        dispatch(logOut());
-        navigate('/pages/login/login3');
-        console.log(store.getState());
-    
-      } catch (error) {
-        console.error(error);
-      }
+      dispatch(logOut());
+      navigate('/pages/login/login3');
+      console.log(store.getState());
+    } catch (error) {
+      console.error(error);
+    }
     console.log('Logout');
   };
 
