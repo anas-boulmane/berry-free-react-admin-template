@@ -1,7 +1,8 @@
-import { useSelector } from 'react-redux';
-
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
+import { Provider } from 'react-redux';
+import { store } from './store/index';
+import { useSelector } from 'react-redux';
 
 // routing
 import Routes from 'routes';
@@ -16,15 +17,18 @@ import NavigationScroll from 'layout/NavigationScroll';
 
 const App = () => {
   const customization = useSelector((state) => state.customization);
+  // const authentication = useSelector((state) => state.authentication);
 
   return (
     <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={themes(customization)}>
-        <CssBaseline />
-        <NavigationScroll>
-          <Routes />
-        </NavigationScroll>
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider theme={themes(customization)}>
+          <CssBaseline />
+          <NavigationScroll>
+            <Routes />
+          </NavigationScroll>
+        </ThemeProvider>
+      </Provider>
     </StyledEngineProvider>
   );
 };

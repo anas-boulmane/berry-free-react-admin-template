@@ -1,4 +1,3 @@
-// project imports
 import config from 'config';
 
 // action - state management
