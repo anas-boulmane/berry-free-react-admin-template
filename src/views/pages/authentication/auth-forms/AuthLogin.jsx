@@ -42,7 +42,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Google from 'assets/images/icons/social-google.svg';
 import { Login } from '@mui/icons-material';
-import authReducer from 'store/authReducer';
+import authReducer from 'store/AuthReducer';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 

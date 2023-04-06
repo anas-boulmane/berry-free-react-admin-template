@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 
 // project imports
-import { PrivateRoute } from './PrivateRoute';
+
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 
