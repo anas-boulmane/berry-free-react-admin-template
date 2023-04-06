@@ -1,6 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { signOut } from 'firebase/auth';
-import { store } from '../../../../store/index';
 import { useSelector } from 'react-redux';
 import { logOut } from 'store/authActions';
 import { useDispatch } from 'react-redux';
@@ -67,11 +65,8 @@ const ProfileSection = () => {
       await auth.signOut();
       dispatch(logOut());
       navigate('/pages/login/login3');
-      console.log(store.getState());
     } catch (error) {
-      console.error(error);
     }
-    console.log('Logout');
   };
 
   const handleClose = (event) => {
