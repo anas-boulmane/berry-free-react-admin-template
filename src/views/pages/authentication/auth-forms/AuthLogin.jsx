@@ -72,10 +72,7 @@ const FirebaseLogin = ({ ...others }) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         const user = result.user;
-        console.log(user);
         dispatch(logIn(user));
-        console.log(store.getState());
-
         // store in cloud firebase
         const { uid, displayName, email, photoURL } = user;
         const userRef = doc(db, 'users', uid);
@@ -88,11 +85,9 @@ const FirebaseLogin = ({ ...others }) => {
           await setDoc(userRef, { displayName, email, photoURL, uid });
         }
         navigate('/');
-        console.log('navigate');
       })
       .catch((error) => {
         const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log(error);
       });
   };
   return (
