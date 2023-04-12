@@ -24,7 +24,6 @@ const FileImportPage = () => {
       const rowData = parseCSV(text);
       const parsedData = createSealesFromRowData(rowData, sealesSchema);
       bulkAddSealse(parsedData, currentUser);
-      console.log(parsedData);
     };
     fileReader.readAsText(file);
   };

@@ -8,7 +8,12 @@ const createSealesFromRowData = (rowData, schema) => {
       const value = row[key.toUpperCase()];
       if (property && property.type) {
         const type = property.type;
-        result[key] = type === 'number' || type === 'integer' ? Number(value) : value;
+        if (type === 'array' && property.items && property.items.type === 'object') {
+          const rowProducts = rowData.filter((rowProduct) => rowProduct['ORDERNUMBER'] === row['ORDERNUMBER']);
+          result[key] = createSealesFromRowData(rowProducts, property.items.properties);
+        } else {
+          result[key] = type === 'number' || type === 'integer' ? Number(value) : value;
+        }
       }
     });
     return result;
