@@ -10,7 +10,6 @@ export const useAuth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(!currentUser.uid);
-  
 
   useEffect(() => {
     if (currentUser.uid) return;

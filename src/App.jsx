@@ -12,8 +12,12 @@ import themes from 'themes';
 
 // project imports
 import NavigationScroll from 'layout/NavigationScroll';
-
+import dbPromise from 'db';
 // ==============================|| APP ||============================== //
+
+dbPromise.then((db) => {
+  console.log('db', db);
+});
 
 const App = () => {
   const customization = useSelector((state) => state.customization);

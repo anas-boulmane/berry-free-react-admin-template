@@ -65,8 +65,7 @@ const ProfileSection = () => {
       await auth.signOut();
       dispatch(logOut());
       navigate('/pages/login/login3');
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleClose = (event) => {
