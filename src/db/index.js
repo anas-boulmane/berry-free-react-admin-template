@@ -1,11 +1,10 @@
 import { createRxDatabase, addRxPlugin } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
-
 import usersSchema from './schema/users.schema';
 import sealesSchema from './schema/seales.schema';
 
-addRxPlugin(RxDBQueryBuilderPlugin)
+addRxPlugin(RxDBQueryBuilderPlugin);
 
 export const createDB = async () => {
   const database = await createRxDatabase({
@@ -13,7 +12,7 @@ export const createDB = async () => {
     storage: getRxStorageDexie()
   });
 
-  await database.addCollections({ 
+  await database.addCollections({
     users: {
       name: 'users',
       schema: usersSchema
@@ -21,10 +20,12 @@ export const createDB = async () => {
     seales: {
       name: 'seales',
       schema: sealesSchema
-    } 
+    },
+    seales_backup: {
+      name: 'seales_backup',
+      schema: sealesSchema
+    }
   });
-
   return database;
-}
-
-export default createDB()
+};
+export default createDB();

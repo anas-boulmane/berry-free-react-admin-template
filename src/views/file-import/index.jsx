@@ -8,6 +8,7 @@ import { bulkAddSealse } from 'store/seales.store';
 import parseCSV from 'utils/parse-csv';
 import createSealesFromRowData from 'utils/create-seales';
 import sealesDefinition from 'db/schema/seales.schema';
+import { backupSeales } from 'db/Replication';
 // ==============================|| SAMPLE PAGE ||============================== //
 
 const sealesSchema = sealesDefinition.properties;
@@ -27,13 +28,17 @@ const FileImportPage = () => {
     };
     fileReader.readAsText(file);
   };
-
+  const handleBackup = () => {
+    backupSeales();
+    alert('Seales backup completed!');
+  };
   return (
     <MainCard title="File import">
       <Typography variant="body2"></Typography>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <input type="file" name="file" accept=".csv" onChange={(e) => setFile(e.target.files[0])} />
         <button type="submit">Submit</button>
+        <button onClick={handleBackup}>Backup Seales</button>
       </form>
     </MainCard>
   );

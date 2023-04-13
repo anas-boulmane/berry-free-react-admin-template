@@ -6,21 +6,21 @@ export default {
   properties: {
     uid: {
       type: 'string',
-      maxLength: 200,
+      maxLength: 200
     },
     displayName: {
-      type: 'string',
+      type: 'string'
     },
     email: {
-      type: 'string',
+      type: 'string'
     },
     photoURL: {
-      type: 'string',
+      type: 'string'
     },
     isCurrentUser: {
       type: 'boolean',
-      default: false,
+      default: false
     }
   },
-  required: ['uid', 'displayName', 'email', 'photoURL'],
-}
+  required: ['uid', 'displayName', 'email', 'photoURL']
+};

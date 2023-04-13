@@ -119,12 +119,5 @@ export default {
       }
     }
   },
-  required: [
-    'user_Id',
-    'orderNumber',
-    'orderDate',
-    'month_Id',
-    'year_Id',
-    'products'
-  ]
+  required: ['user_Id', 'orderNumber', 'orderDate', 'month_Id', 'year_Id', 'products']
 };

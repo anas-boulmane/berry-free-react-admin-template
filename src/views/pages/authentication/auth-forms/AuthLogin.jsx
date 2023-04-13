@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { db, auth, googleProvider } from '../../../../firbaseConfig/Firebase';
+import { firebaseDB, auth, googleProvider } from '../../../../firbaseConfig/Firebase';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -61,7 +61,7 @@ const FirebaseLogin = ({ ...others }) => {
         dispatch(logIn(user));
         // store in cloud firebase
         const { uid, displayName, email, photoURL } = user;
-        const userRef = doc(db, 'users', uid);
+        const userRef = doc(firebaseDB, 'users', uid);
         const userDoc = await getDoc(userRef);
         if (userDoc.exists()) {
           // User already exists, update the document
