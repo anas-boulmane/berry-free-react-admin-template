@@ -9,6 +9,8 @@ import parseCSV from 'utils/parse-csv';
 import createSealesFromRowData from 'utils/create-seales';
 import sealesDefinition from 'db/schema/seales.schema';
 import { backupSeales } from 'db/Replication';
+import { restoreSeales } from 'db/Replication';
+import dbPromise from 'db';
 // ==============================|| SAMPLE PAGE ||============================== //
 
 const sealesSchema = sealesDefinition.properties;
@@ -32,6 +34,12 @@ const FileImportPage = () => {
     backupSeales();
     alert('Seales backup completed!');
   };
+  const handleRestore = async () => {
+      await restoreSeales();
+      const db = await dbPromise;
+      const seales = await db.seales.find().exec();
+      console.log(seales);
+  };
   return (
     <MainCard title="File import">
       <Typography variant="body2"></Typography>
@@ -39,6 +47,7 @@ const FileImportPage = () => {
         <input type="file" name="file" accept=".csv" onChange={(e) => setFile(e.target.files[0])} />
         <button type="submit">Submit</button>
         <button onClick={handleBackup}>Backup Seales</button>
+        <button onClick={handleRestore}>Restore Seales</button>
       </form>
     </MainCard>
   );

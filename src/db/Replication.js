@@ -1,36 +1,49 @@
 import { replicateFirestore } from 'rxdb/plugins/replication-firestore';
 import dbPromise from 'db';
 import { firebaseDB } from 'firbaseConfig/Firebase';
-import { collection, doc, runTransaction } from 'firebase/firestore';
+import { collection, doc, writeBatch, getDocs} from 'firebase/firestore';
 
 export const backupSeales = async () => {
   const db = await dbPromise;
   const seales = await db.seales.find().exec();
   const sealesData = seales.map((seal) => seal.toJSON());
-  // Run a transaction to write the sealesData documents to Firestore
-  await runTransaction(firebaseDB, async (transaction) => {
-    sealesData.forEach((seal) => {
+  const batchSize = 100;
+  const numBatches = Math.ceil(sealesData.length / batchSize);
+
+  for (let i = 0; i < numBatches; i++) {
+    const start = i * batchSize;
+    const end = Math.min(start + batchSize, sealesData.length);
+    let batch = writeBatch(firebaseDB);
+    let batchCount = 0;
+    sealesData.slice(start, end).forEach((seal) => {
       // Remove the primary key property
       const { orderNumber, ...sealData } = seal;
       // Create the seales_backup document
       const firestoreCollection = collection(firebaseDB, 'seales_backup');
       const sealesBackupRef = doc(firestoreCollection, orderNumber);
-      // Add the sealesData document to the transaction
-      transaction.set(sealesBackupRef, sealData);
+      // Add the sealesData document to the batch
+      batch.set(sealesBackupRef, sealData);
+      batchCount++;
       // Create subcollections for the products array items
       seal.products.forEach((product, index) => {
+        if (batchCount >= 500) {
+          // Commit the current batch and create a new one
+          batch.commit();
+          batch = writeBatch(firebaseDB);
+          batchCount = 0;
+        }
         const productData = { ...product };
-        const productColl = collection(sealesBackupRef,'products')
+        const productColl = collection(sealesBackupRef, 'products');
         const productRef = doc(productColl, index.toString());
-        // Add the product document to the transaction
-        transaction.set(productRef, productData);
+        // Add the product document to the batch
+        batch.set(productRef, productData);
+        batchCount++;
       });
     });
-  });
-
+    await batch.commit();
+  }
   // Insert the sealesData documents into the local database
   await db.seales_backup.bulkInsert(sealesData);
-
   // Set up replication to sync the local database with Firestore
   const replicationState = replicateFirestore({
     collection: db.seales_backup,
@@ -42,6 +55,14 @@ export const backupSeales = async () => {
     live: true,
     serverTimestampField: 'serverTimestamp'
   });
+
   return replicationState;
 };
 
+export const restoreSeales = async () => {
+  const db = await dbPromise;
+  const firestoreCollection = collection(firebaseDB, 'seales_backup');
+  const querySnapshot = await getDocs(firestoreCollection);
+  const sealesData = querySnapshot.docs.map((doc) => doc.data());
+  await db.seales.bulkInsert(sealesData);
+};
