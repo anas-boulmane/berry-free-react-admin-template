@@ -35,10 +35,12 @@ const FileImportPage = () => {
     alert('Seales backup completed!');
   };
   const handleRestore = async () => {
-      await restoreSeales();
-      const db = await dbPromise;
-      const seales = await db.seales.find().exec();
-      console.log(seales);
+    await restoreSeales();
+    alert('Seales restore completed!');
+    // Verify that the data was restored correctly
+    const db = await dbPromise;
+    const seales = await db.seales.find().exec();
+    console.log('Local seales data:', seales);
   };
   return (
     <MainCard title="File import">
