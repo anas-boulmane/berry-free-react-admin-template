@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-
-import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+import { logOut } from 'store/authActions';
+import { useDispatch } from 'react-redux';
+import { auth } from 'firbaseConfig/Firebase';
+import { useNavigate } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
@@ -55,8 +56,16 @@ const ProfileSection = () => {
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
   const anchorRef = useRef(null);
+  const authentication = useSelector((state) => state.auth);
+  // log out
+  const dispatch = useDispatch();
   const handleLogout = async () => {
-    console.log('Logout');
+    try {
+      // Sign out
+      await auth.signOut();
+      dispatch(logOut());
+      navigate('/pages/login/login3');
+    } catch (error) {}
   };
 
   const handleClose = (event) => {
@@ -111,7 +120,7 @@ const ProfileSection = () => {
         }}
         icon={
           <Avatar
-            src={User1}
+            src={auth.currentUser.photoURL}
             sx={{
               ...theme.typography.mediumAvatar,
               margin: '8px 0 8px 8px !important',
@@ -159,7 +168,7 @@ const ProfileSection = () => {
                       <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography variant="h4">Good Morning,</Typography>
                         <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                          Johne Doe
+                          {auth.currentUser.displayName}
                         </Typography>
                       </Stack>
                       <Typography variant="subtitle2">Project Admin</Typography>

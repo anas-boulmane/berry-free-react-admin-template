@@ -49,9 +49,7 @@ const FirebaseRegister = ({ ...others }) => {
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
 
-  const googleHandler = async () => {
-    console.error('Register');
-  };
+  const googleHandler = async () => {};
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);

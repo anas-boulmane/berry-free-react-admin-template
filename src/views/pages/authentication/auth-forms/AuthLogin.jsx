@@ -1,5 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { firebaseDB, auth, googleProvider } from '../../../../firbaseConfig/Firebase';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logIn } from 'store/authActions';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -34,29 +40,42 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Google from 'assets/images/icons/social-google.svg';
+import { Login } from '@mui/icons-material';
+import authReducer from 'store/AuthReducer';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const FirebaseLogin = ({ ...others }) => {
   const theme = useTheme();
-  const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const customization = useSelector((state) => state.customization);
-  const [checked, setChecked] = useState(true);
-
+  //==============================|| signInGoogle ||==============================
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const googleHandler = async () => {
-    console.error('Login');
+    signInWithPopup(auth, googleProvider)
+      .then(async (result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        const user = result.user;
+        dispatch(logIn(user));
+        // store in cloud firebase
+        const { uid, displayName, email, photoURL } = user;
+        const userRef = doc(firebaseDB, 'users', uid);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          // User already exists, update the document
+          await updateDoc(userRef, { displayName, email, photoURL, uid });
+        } else {
+          // User does not exist, create a new document
+          await setDoc(userRef, { displayName, email, photoURL, uid });
+        }
+        navigate('/');
+      })
+      .catch((error) => {
+        const credential = GoogleAuthProvider.credentialFromError(error);
+      });
   };
-
-  const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
   return (
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
@@ -118,7 +137,7 @@ const FirebaseLogin = ({ ...others }) => {
         </Grid>
       </Grid>
 
-      <Formik
+      {/* <Formik
         initialValues={{
           email: 'info@codedthemes.com',
           password: '123456',
@@ -222,7 +241,7 @@ const FirebaseLogin = ({ ...others }) => {
             </Box>
           </form>
         )}
-      </Formik>
+      </Formik> */}
     </>
   );
 };

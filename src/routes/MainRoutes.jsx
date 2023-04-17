@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 
 // project imports
+
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 
@@ -16,6 +17,7 @@ const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
+const FileImportPage = Loadable(lazy(() => import('views/file-import')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -84,8 +86,11 @@ const MainRoutes = {
     {
       path: 'sample-page',
       element: <SamplePage />
+    },
+    {
+      path: 'file-import',
+      element: <FileImportPage />
     }
   ]
 };
-
 export default MainRoutes;
